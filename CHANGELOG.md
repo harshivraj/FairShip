@@ -46,6 +46,8 @@ it in future.
 
 ### Removed
 
+* Remove the standalone ACTS chain (`macro/run_ACTSTracking.py`, `python/convertToACTS.py`, `python/ACTSReco.py` and the `SiliconTarget`/`MTC`/`StrawTracker` digitisation configs). It used `SiTargetBuilder`, `MTCBuilder`, `SHiPTrackWriter` and `MagneticFieldMapXyz` options that the current `acts-ship` package no longer has, so it did not run. ACTS fitting is still available through `ShipReco.py --trackFitter acts`.
+
 ## 26.09 - 2026-09-15
 
 This release fixes bugs that change simulation output. Samples produced with
