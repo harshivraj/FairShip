@@ -62,10 +62,6 @@ from shipTrackAccess import track_info, uses_acts
 
 # reco file written with --trackFitter acts (RecoTracks) or genfit (FitTracks)?
 actsMode = uses_acts(sTree)
-if actsMode:
-    import acts
-    import acts.examples
-    import cppyy
 
 if not options.geoFile:
     options.geoFile = options.inputFile.replace("ship.", "geofile_full.").replace("_rec.", ".")
@@ -313,8 +309,8 @@ def checkFiducialVolume(sTree, tkey: int, dy) -> bool:
     if not fiducialCut:
         return True
     if actsMode:
-        fT = sTree.RecoTracks[tkey]
-        rc, pos, _mom = acts.extrapolateTrackToZ(cppyy.addressof(fT), ShipGeo.Bfield.z)
+        pos = ROOT.TVector3()
+        rc = sTree.RecoTracks[tkey].ExtrapolateToZ(ShipGeo.Bfield.z, pos)
         if not rc:
             return False
         if not dist2InnerWall(pos[0], pos[1], pos[2]) > 0:
@@ -787,8 +783,9 @@ def myEventLoop(n: int) -> None:
     # check extrapolation to TimeDet if exists
     if hasattr(ShipGeo, "TimeDet"):
         if actsMode:
+            pos = ROOT.TVector3()
             for fT in sTree.RecoTracks:
-                rc, pos, _mom = acts.extrapolateTrackToZ(cppyy.addressof(fT), ShipGeo.TimeDet.z)
+                rc = fT.ExtrapolateToZ(ShipGeo.TimeDet.z, pos)
                 if rc:
                     for aPoint in sTree.TimeDetPoint:
                         h["extrapTimeDetX"].Fill(pos[0] - aPoint.GetX())
