@@ -381,9 +381,22 @@ def create_config(
     c.CaloScoringPlane.DX = 4 * u.m  # full width  (former SplitCal 2*XMax)
     c.CaloScoringPlane.DY = 6 * u.m  # full height (former SplitCal 2*YMax)
     c.CaloScoringPlane.DZ = 1 * u.mm  # full thickness
+<<<<<<< HEAD
     # Centre of the plane; its upstream face is the ECAL front face, 38.90 m downstream of the
     # decay vessel centre, i.e. at 97.17 m (integration layout 2026-0.1)
     c.CaloScoringPlane.z = 38.900 * u.m + c.decayVolume.z + c.CaloScoringPlane.DZ / 2
+=======
+    # Digitisation (python/detectors/CaloScoringPlaneDetector.py). Particle identification is
+    # configured at reconstruction time: ShipReco.py --caloScoringPlanePID file.yaml
+    c.CaloScoringPlane.PositionResolution = 0.0 * u.cm  # Gaussian x/y smearing, 0 = none
+    c.CaloScoringPlane.TimeResolution = 0.0  # Gaussian time smearing in ns, 0 = none
+    c.CaloScoringPlane.ForwardOnly = True  # digitise only crossings with pz > 0
+    c.CaloScoringPlane.IgnoredPdg = [12, 14, 16]  # never produce a hit (neutrinos)
+    # Downstream face of the timing detector (bars are staggered downstream of TimeDet.z).
+    c.TimeDet.zEnd = c.TimeDet.z + c.TimeDet.dzBarRow + c.TimeDet.dzBarCol + c.TimeDet.zBar / 2
+    # Centre of the plane; its upstream face is the calorimeter entrance window.
+    c.CaloScoringPlane.z = c.TimeDet.zEnd + c.CaloScoringPlane.gapToTimeDet + c.CaloScoringPlane.DZ / 2
+>>>>>>> pr-1420
     if c.CaloScoringPlane.z + c.CaloScoringPlane.DZ / 2 >= c.cave.zEnd:
         raise ValueError(
             f"CaloScoringPlane ends at z = {c.CaloScoringPlane.z + c.CaloScoringPlane.DZ / 2} cm, "

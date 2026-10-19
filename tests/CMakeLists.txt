@@ -80,6 +80,7 @@ target_link_libraries(
 )
 add_test(NAME FixedTargetCascadeWeight COMMAND testFixedTargetCascadeWeight)
 
+<<<<<<< HEAD
 # Event-level uncertainties for samples with correlated (split) branches
 add_executable(testEventHistogram test_event_histogram.cxx)
 target_link_libraries(
@@ -115,6 +116,22 @@ target_link_libraries(
 add_test(
     NAME SplitSet
     COMMAND testSplitSet ${CMAKE_CURRENT_SOURCE_DIR}/data/muonback_smoke.root
+=======
+add_executable(testCaloScoringPlanePID test_calo_scoring_plane_pid.cxx)
+target_link_libraries(
+    testCaloScoringPlanePID
+    CaloScoringPlane
+    ROOT::Core
+    ROOT::MathCore
+    ROOT::EG
+    FairRoot::Base
+    FairLogger::FairLogger
+)
+add_test(NAME CaloScoringPlanePID COMMAND testCaloScoringPlanePID)
+set_tests_properties(
+    CaloScoringPlanePID
+    PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
+>>>>>>> pr-1420
 )
 
 # Python unit tests. Run with the interpreter of the active environment so the
